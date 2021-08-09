@@ -45,8 +45,8 @@ from machine import symphogear as machine
 
 と記載・加筆し、
 
-```python
-python 1+2mix.py <試行回数>
+```shell
+python 1+2mix.py <機種名> <試行回数>
 ```
 とすれば動きます。  
 結果は`result.csv`に出力されます。

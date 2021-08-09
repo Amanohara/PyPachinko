@@ -1,16 +1,28 @@
 import random
 import pandas as pd
 import sys
-from machine import symphogear as machine
+import importlib
 
 '''
 1種2種混合機
 '''
 
-def main(*args):
+
+def main(machine_name: str, trials: int):
+    """
+    1種2種混合機
+
+    :param string machine_name: 機種名
+    :param int trials: 試行回数
+    :return: None
+    """
+
+    # 指定された機種を読み込み.
+    machine = importlib.import_module(f'machine.{machine_name}')
+
     normal, koukaku, tokuzu1, tokuzu2 = machine.information()
     # 試行回数
-    challenge = int(args[1])
+    challenge = int(trials)
     # 確認
     print("低確率：1/" + str(normal))
     print("高確率：1/" + str(koukaku))
@@ -155,7 +167,9 @@ def chusen_fine(tokuzu2_atari, kaiten, limit):
 
 if __name__ == '__main__':
     args = sys.argv
-    if len(args) < 1:
-        print("Error.\n<Usage>\npython3 1+2mix.py <試行回数>")
+    if len(args) < 3:
+        print("Error.\n<Usage>\npython3 1+2mix.py <機種名> <試行回数>")
     else:
-        main(*args)
+        machine_name = args[1]
+        trials = int(args[2])
+        main(machine_name, trials)
