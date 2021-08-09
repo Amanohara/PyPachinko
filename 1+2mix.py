@@ -51,7 +51,7 @@ def main(*args):
             0はシンフォギアスペック(突破型）
             1は時短突入率で判定かつ当せん
             2は時短突入率で判定かつ通常
-            ''' 
+            '''
             migiuchi = machine.migiuchi_judge(furiwake)
             if migiuchi == 0:
                 # 最終決戦突入。ただし振り分けで1％を引くと高確率直行
@@ -64,7 +64,7 @@ def main(*args):
                 mode = "koukaku"
             else:
                 # 通常
-                mode="normal"
+                mode = "normal"
         elif kekka == 2:
             # 特図2大当たり。振り分け判定。
             furiwake = machine.furiwake_denchu()
@@ -156,6 +156,6 @@ def chusen_fine(tokuzu2_atari, kaiten, limit):
 if __name__ == '__main__':
     args = sys.argv
     if len(args) < 1:
-        print("Error.\n<Usage>\npython3 1+2mix.py 試行回数")
+        print("Error.\n<Usage>\npython3 1+2mix.py <試行回数>")
     else:
         main(*args)

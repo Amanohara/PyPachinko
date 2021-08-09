@@ -7,6 +7,7 @@ from machine import dunbine as machine
 V-ST機
 '''
 
+
 def main(*args):
     normal, koukaku, tokuzu1, tokuzu2 = machine.information()
     # 試行回数
@@ -49,7 +50,7 @@ def main(*args):
             時短突入抽せん
             1は時短突入率で判定かつ当せん
             2は時短突入率で判定かつ通常
-            ''' 
+            '''
             migiuchi = machine.migiuchi_judge(furiwake)
             if migiuchi == 0:
                 # 最終決戦突入。ただし振り分けで1％を引くと高確率直行
@@ -62,7 +63,7 @@ def main(*args):
                 mode = "koukaku"
             else:
                 # 時短
-                mode="jitan"
+                mode = "jitan"
         elif kekka == 2:
             # 特図2大当たり。振り分け判定。
             furiwake = machine.furiwake_denchu()

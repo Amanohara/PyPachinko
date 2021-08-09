@@ -7,6 +7,7 @@ from machine import fuyusona as machine
 確変ループ機
 '''
 
+
 def main(*args):
     normal, koukaku, jitan = machine.information()
     # 試行回数
@@ -47,7 +48,7 @@ def main(*args):
             kaiten = 0
             kaiten_sum = kaiten_sum + 1
             # 振り分けにより次回モードを変更
-            if kakuhen_mode == True :
+            if kakuhen_mode == True:
                 # 確変
                 mode = "koukaku"
             else:
@@ -63,7 +64,7 @@ def main(*args):
             kaiten = 0
             kaiten_sum = kaiten_sum + 1
             # 振り分けにより次回モードを変更
-            if kakuhen_mode == True :
+            if kakuhen_mode == True:
                 # 確変
                 mode = "koukaku"
             else:
@@ -118,7 +119,7 @@ def chusen_normal(tokuzu1):
 def chusen_koukaku(tokuzu2_atari):
     # 特図2での抽せん
     lottery = random.randint(0, 65536)
-    if lottery in tokuzu2_atari :
+    if lottery in tokuzu2_atari:
         # 大当たり
         result = 2
     else:

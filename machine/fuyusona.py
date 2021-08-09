@@ -5,8 +5,10 @@ import random
 ぱちんこ 冬のソナタ FOREVER
 '''
 
+
 def main():
     pass
+
 
 def information():
     # 特図1での大当たり確率[1/n]
@@ -51,6 +53,7 @@ def furiwake_denchu():
         denchu = "10R（通常）"
         kakuhen = False
     return denchu, kakuhen
+
 
 if __name__ == '__main__':
     main()
