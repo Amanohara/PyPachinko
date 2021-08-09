@@ -3,6 +3,8 @@ import pandas as pd
 import sys
 import importlib
 
+from utils.validate_args import is_valid_args
+
 '''
 1種2種混合機
 '''
@@ -169,7 +171,12 @@ if __name__ == '__main__':
     args = sys.argv
     if len(args) < 3:
         print("Error.\n<Usage>\npython3 1+2mix.py <機種名> <試行回数>")
-    else:
-        machine_name = args[1]
-        trials = int(args[2])
-        main(machine_name, trials)
+        sys.exit('error: invalid args')
+    elif not is_valid_args(args[1], args[2]):
+        # バリデーションエラーの場合
+        sys.exit('error: invalid args')
+
+    machine_name = args[1]
+    trials = int(args[2])
+
+    main(machine_name, trials)
