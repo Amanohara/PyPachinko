@@ -148,3 +148,7 @@ $RECYCLE.BIN/
 .DS_Store
 /\.vscode/
 code.bat
+.idea/
+
+/result.csv
+__pycache__/

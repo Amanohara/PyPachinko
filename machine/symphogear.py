@@ -5,8 +5,10 @@ import random
 CRF戦姫絶唱シンフォギア
 '''
 
+
 def main():
     pass
+
 
 def information():
     # 特図1での大当たり確率[1/n]
@@ -44,11 +46,13 @@ def furiwake_denchu():
         denchu = "15R（確変）"
     return denchu
 
+
 def migiuchi_judge(heso):
     # 確変突入率のジャッジ
     # シンフォギアは100%右打ち
     judge = 0
     return judge
+
 
 if __name__ == '__main__':
     main()

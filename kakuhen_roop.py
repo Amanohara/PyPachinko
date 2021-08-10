@@ -1,16 +1,22 @@
 import random
 import pandas as pd
 import sys
-from machine import fuyusona as machine
+import importlib
+
+from utils.validate_args import is_valid_args
 
 '''
 確変ループ機
 '''
 
-def main(*args):
+
+def main(machine_name: str, trials: int):
+    # 指定された機種を読み込み.
+    machine = importlib.import_module(f'machine.{machine_name}')
+
     normal, koukaku, jitan = machine.information()
     # 試行回数
-    challenge = int(args[1])
+    challenge = int(trials)
     # 確認
     print("低確率：1/" + str(normal))
     print("高確率：1/" + str(koukaku))
@@ -47,7 +53,7 @@ def main(*args):
             kaiten = 0
             kaiten_sum = kaiten_sum + 1
             # 振り分けにより次回モードを変更
-            if kakuhen_mode == True :
+            if kakuhen_mode == True:
                 # 確変
                 mode = "koukaku"
             else:
@@ -63,7 +69,7 @@ def main(*args):
             kaiten = 0
             kaiten_sum = kaiten_sum + 1
             # 振り分けにより次回モードを変更
-            if kakuhen_mode == True :
+            if kakuhen_mode == True:
                 # 確変
                 mode = "koukaku"
             else:
@@ -118,7 +124,7 @@ def chusen_normal(tokuzu1):
 def chusen_koukaku(tokuzu2_atari):
     # 特図2での抽せん
     lottery = random.randint(0, 65536)
-    if lottery in tokuzu2_atari :
+    if lottery in tokuzu2_atari:
         # 大当たり
         result = 2
     else:
@@ -145,7 +151,14 @@ def chusen_jitan(tokuzu1_atari, kaiten, limit):
 
 if __name__ == '__main__':
     args = sys.argv
-    if len(args) < 1:
-        print("Error.\n<Usage>\npython3 kakuhen_roop.py 試行回数")
-    else:
-        main(*args)
+    if len(args) < 3:
+        print("Error.\n<Usage>\npython3 kakuhen_roop.py <機種名> <試行回数>")
+        sys.exit('error: invalid args')
+    elif not is_valid_args(args[1], args[2]):
+        # バリデーションエラーの場合
+        sys.exit('error: invalid args')
+
+    machine_name = args[1]
+    trials = int(args[2])
+
+    main(machine_name, trials)

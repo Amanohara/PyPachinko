@@ -5,8 +5,10 @@ import random
 P大工の源さん超韋駄天
 '''
 
+
 def main():
     pass
+
 
 def information():
     # 特図1での大当たり確率[1/n]
@@ -40,12 +42,13 @@ def furiwake_denchu():
         denchu = "9R（連荘）"
     return denchu
 
+
 def migiuchi_judge(heso):
     # 確変突入率のジャッジ
     # 大工の源さんは60.2%で右打ち
     if heso == "6R(確変)":
         judge = 1
-    else :
+    else:
         judge = 2
     return judge
 

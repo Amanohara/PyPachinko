@@ -1,16 +1,30 @@
 import random
 import pandas as pd
 import sys
-from machine import symphogear as machine
+import importlib
+
+from utils.validate_args import is_valid_args
 
 '''
 1種2種混合機
 '''
 
-def main(*args):
+
+def main(machine_name: str, trials: int):
+    """
+    1種2種混合機
+
+    :param string machine_name: 機種名
+    :param int trials: 試行回数
+    :return: None
+    """
+
+    # 指定された機種を読み込み.
+    machine = importlib.import_module(f'machine.{machine_name}')
+
     normal, koukaku, tokuzu1, tokuzu2 = machine.information()
     # 試行回数
-    challenge = int(args[1])
+    challenge = int(trials)
     # 確認
     print("低確率：1/" + str(normal))
     print("高確率：1/" + str(koukaku))
@@ -51,7 +65,7 @@ def main(*args):
             0はシンフォギアスペック(突破型）
             1は時短突入率で判定かつ当せん
             2は時短突入率で判定かつ通常
-            ''' 
+            '''
             migiuchi = machine.migiuchi_judge(furiwake)
             if migiuchi == 0:
                 # 最終決戦突入。ただし振り分けで1％を引くと高確率直行
@@ -64,7 +78,7 @@ def main(*args):
                 mode = "koukaku"
             else:
                 # 通常
-                mode="normal"
+                mode = "normal"
         elif kekka == 2:
             # 特図2大当たり。振り分け判定。
             furiwake = machine.furiwake_denchu()
@@ -155,7 +169,14 @@ def chusen_fine(tokuzu2_atari, kaiten, limit):
 
 if __name__ == '__main__':
     args = sys.argv
-    if len(args) < 1:
-        print("Error.\n<Usage>\npython3 1+2mix.py 試行回数")
-    else:
-        main(*args)
+    if len(args) < 3:
+        print("Error.\n<Usage>\npython3 1+2mix.py <機種名> <試行回数>")
+        sys.exit('error: invalid args')
+    elif not is_valid_args(args[1], args[2]):
+        # バリデーションエラーの場合
+        sys.exit('error: invalid args')
+
+    machine_name = args[1]
+    trials = int(args[2])
+
+    main(machine_name, trials)
