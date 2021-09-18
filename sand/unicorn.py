@@ -6,141 +6,75 @@ import matplotlib.pyplot as plt
 # %matplotlib inline
 
 """
-Pフィーバー革命機ヴァルヴレイヴ2
-大当り確率	1/319.7→1/32.0
-確変突入率	特図1：50%　特図2：94%
-(ST70回)（※1）
-RUSH突入率	約58%（※2）
-RUSH継続率	約90%（※3）
+Pフィーバー機動戦士ガンダムユニコーン
+大当り確率	1/319.7→約1/41.1（※1）
+RUSH突入率	60%
+RUSH継続率（※2）	約81%
+転落小当り確率（※3）	約1/153.7
 賞球数	3&1&5&15
-ラウンド	2R or 3R or 4R or 7R or 10R
+ラウンド	3R or 10R
 カウント	10カウント
-出玉	約300 or 450 or 600 or
-1050 or 1500個
+出玉	450 or 1500個
 ※払い出し
-電サポ	8 or 70 or 100 or 10000回
+電サポ	次回大当りorバトル敗北まで
 
 大当り割合
-特図1	ラウンド	電サポ回数	比率
-10R確変	70回	25%
-3R確変	70回	13%
-3R確変	8回（※1）（※2）	12%
-3R通常	100回	39%
-3R通常	8回（※3）	11%
-
-特図2	ラウンド	電サポ回数	比率
-10R確変	70回	7%
-7R確変	70回	31%
-4R確変	70回	25%
-2R確変	70回	31%
-7R通常	10000回	2%
-4R通常	10000回	2%
-2R通常	10000回	2%
-※1…ST残り62回は電サポなし。
-※2…高確中は電サポ70回。
-※3…高確中は電サポ100回。
+特図1	ラウンド	電サポ	比率
+10R×2回	RUSH	20%
+3R	RUSH	40%
+3R	ー	40%
+特図2A（※1）	ラウンド	電サポ	比率
+10R	RUSH	100%
+特図2B（※2）	ラウンド	電サポ	比率
+10R	覚醒HYPER	100%
+※1…特図2A＝大当り2回目（初回含む）まで。
+※2…特図2B＝大当り3回目以降。
 """
 
 def information():
-    codename = "P_VVV2"
+    codename = "P_UNICORN"
     # 低確率状態での大当たり確率[1/n]
     normal = 319.7
     # 高確率状態での大当たり確率[1/n]
-    koukaku = 32.0
+    koukaku = 41.1
+    # 転落小当たり確率
+    tenraku = 153.7
     # 賞球（ヘソ、電チュー、一般入賞口、アタッカー、カウント）
     syokyu = [3, 1, 5, 15, 10]
-    return normal, koukaku, syokyu, codename
+    return normal, koukaku, syokyu, tenraku,codename
 
 def furiwake_heso():
     a = random.randint(0, 100)
-    if a < 25:
-        furiwake = "10R（確変）"
+    if a < 20:
+        furiwake = "10R*2（確変）"
         kakuhen = True
         densapo = True
-        round = 10
-        kakuhen_time = 70
-        jitan_time = 70
-    elif a >= 25 and a < 38:
+        round = 20
+        kakuhen_time = 9999
+        jitan_time = 9999
+    elif a >= 20 and a < 60:
         furiwake = "3R（確変）"
         kakuhen = True
         densapo = True
         round = 3
-        kakuhen_time = 70
-        jitan_time = 70
-    elif a >= 38 and a < 50:
-        furiwake = "3R（確変）"
-        kakuhen = True
-        densapo = True
-        round = 3
-        kakuhen_time = 70
-        jitan_time = 8
-    elif a >= 50 and a < 89:
-        furiwake = "3R（通常）"
-        kakuhen = False
-        densapo = True
-        round = 3
-        kakuhen_time = 0
-        jitan_time = 100
+        kakuhen_time = 9999
+        jitan_time = 9999
     else:
         furiwake = "3R（通常）"
         kakuhen = False
         densapo = True
         round = 3
         kakuhen_time = 0
-        jitan_time = 8
+        jitan_time = 0
     return furiwake, kakuhen, densapo, round, kakuhen_time, jitan_time
 
 def furiwake_denchu():
-    a = random.randint(0, 100)
-    if a < 7:
-        furiwake = "10R（確変）"
-        kakuhen = True
-        densapo = True
-        round = 10
-        kakuhen_time = 70
-        jitan_time = 70
-    elif a >= 7 and a < 38:
-        furiwake = "7R（確変）"
-        kakuhen = True
-        densapo = True
-        round = 7
-        kakuhen_time = 70
-        jitan_time = 70
-    elif a >= 38 and a < 63:
-        furiwake = "4R（確変）"
-        kakuhen = True
-        densapo = True
-        round = 4
-        kakuhen_time = 70
-        jitan_time = 70
-    elif a >= 63 and a < 94:
-        furiwake = "2R（確変）"
-        kakuhen = True
-        densapo = True
-        round = 2
-        kakuhen_time = 70
-        jitan_time = 70
-    elif a >= 94 and a < 96:
-        furiwake = "7R（通常）"
-        kakuhen = False
-        densapo = True
-        round = 7
-        kakuhen_time = 0
-        jitan_time = 10000
-    elif a >= 96 and a < 98:
-        furiwake = "4R（通常）"
-        kakuhen = False
-        densapo = True
-        round = 4
-        kakuhen_time = 0
-        jitan_time = 10000
-    else:
-        furiwake = "2R（通常）"
-        kakuhen = False
-        densapo = True
-        round = 2
-        kakuhen_time = 0
-        jitan_time = 10000
+    furiwake = "10R（確変）"
+    kakuhen = True
+    densapo = True
+    round = 10
+    kakuhen_time = 70
+    jitan_time = 70
     return furiwake, kakuhen, densapo, round, kakuhen_time, jitan_time
 
 def ram_clear():
@@ -154,17 +88,20 @@ def ram_clear():
     return kaiten, kaiten_sum, kakuhen, kakuhen_time, densapo, jitan_time
 
 
-def random_select(normal, koukaku):
+def random_select(normal, koukaku, tenraku):
     # 乱数設定を行う。大当たり確率は65536個中のX個で決定している。
     heso_ran = 1 / normal * 65536
     heso_ran = int(heso_ran)
     denchu_ran = 1 / koukaku * 65536
     denchu_ran = int(denchu_ran)
+    tenraku_ran = 1 / tenraku * 65536
+    tenraku_ran = int(tenraku_ran)
     # 乱数生成
     a = list(range(0, 65536))
     heso_atari = random.sample(a, heso_ran)
     denchu_atari = random.sample(a, denchu_ran)
-    return heso_atari, denchu_atari
+    tenraku_atari = random.sample(a, tenraku_ran)
+    return heso_atari, denchu_atari, tenraku_atari
 
 
 def create_flame():
@@ -186,15 +123,19 @@ def chusen_normal(tokuzu1):
     return result
 
 
-def chusen_koukaku(tokuzu2_atari):
+def chusen_koukaku(tokuzu2_atari, tenraku_atari):
     # 特図2での抽せん
     lottery = random.randint(0, 65536)
-    if lottery in tokuzu2_atari:
-        # 大当たり
-        result = 1
-    else:
-        # はずれ
-        result = 0
+    if not lottery in tenraku_atari:
+        if lottery in tokuzu2_atari:
+            # 大当たり
+            result = 1
+        else:
+            # はずれ
+            result = 0
+    else :
+        # 転落小当たり
+        result = 2
     return result
 
 
@@ -206,7 +147,7 @@ def calc_border(border):
 
 def main(trials:int, border:int):
     # 機種情報読み込み
-    normal, koukaku, syokyu, machinename = information()
+    normal, koukaku, syokyu, tenraku, machinename = information()
     # 試行回数
     challenge = int(trials)
     # ボーダーの計算
@@ -215,7 +156,7 @@ def main(trials:int, border:int):
     print("低確率：1/" + str(normal))
     print("高確率：1/" + str(koukaku))
     # 乱数設定
-    heso, denchu = random_select(normal, koukaku)
+    heso, denchu, tenraku = random_select(normal, koukaku, tenraku)
     # ラムクリア
     kaiten, kaiten_sum, kakuhen,kakuhen_time,  densapo, jitan_time = ram_clear()
     sadama = 0
@@ -234,7 +175,7 @@ def main(trials:int, border:int):
         else:
             # 高確率
             if kaiten < kakuhen_time:
-                kekka = chusen_normal(denchu)
+                kekka = chusen_koukaku(denchu, tenraku)
             else :
                 # ST終了時を想定
                 kakuhen = False
@@ -248,7 +189,7 @@ def main(trials:int, border:int):
             # 電サポではないときは差玉をマイナスにする
             if densapo == False :
                 sadama = sadama - int(cost_border)
-        else :
+        elif kekka == 1 :
             # 大当たり
             # 通常時なら特図1振り分け
             # 電サポ中なら特図2振り分け
@@ -267,12 +208,37 @@ def main(trials:int, border:int):
             # 回転数を記録後、リセット
             kaiten = 0
             kaiten_sum = kaiten_sum + 1
+        else :
+            # 転落
+            kakuhen = False
+            densapo = False
+            kaiten = 0
+            kaiten_sum = kaiten_sum + 1
+            # 泣きの4回
+            for i in range(4):
+                kekka = chusen_koukaku(denchu, tenraku)
+                if kekka == 1 :
+                    # 引き戻し
+                    furiwake, kakuhen, densapo, round, kakuhen_time, jitan_time = furiwake_denchu()
+                    record = pd.Series([kaiten_sum, kaiten, furiwake, sadama], index=result.columns)
+                    result = result.append(record, ignore_index=True)
+                    # 大当たり時の出玉の計算
+                    # アタッカー賞球 * ラウンドを足せばよい
+                    dedama = syokyu[3] * syokyu[4] * round
+                    sadama = sadama + dedama
+                    kaiten = 0
+                    kaiten_sum = kaiten_sum + 1
+                    break
+                else:
+                    kaiten = 0
+                    kaiten_sum = kaiten_sum + 1
+
     result.to_csv("result.csv", index=None)
     # グラフを描く。描くのは総回転数と出玉。タイトルには機種名と試行回数とボーダーを載せる
     title = str(machinename)+ "(N=" + str(trials) + ",border=" + str(border) + ")"
     fig = result.plot(x = '総回転数', y = '差玉', title = title, legend=False )
     plt.savefig("result.pdf")
-
+    plt.savefig("result.png")
 
 if __name__ == '__main__':
     args = sys.argv
