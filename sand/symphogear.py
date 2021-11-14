@@ -6,85 +6,88 @@ import matplotlib.pyplot as plt
 # %matplotlib inline
 
 """
-Pスーパー海物語 IN 沖縄5
-大当り確率	約1/319.6→約1/38.0
-確変突入率	60%
-賞球数	3&2&4&15
-ラウンド	2R or 10R
-カウント	10カウント
-出玉	90 or 1500個
-※払い出し
-時短	100 or 120回
+突破型
+CRF戦姫絶唱シンフォギア
+スペック	199ver.
+大当り確率	1/199.8→約1/7.4
+シンフォギアチャンス突入率	約52%
+※最終決戦時の保留内最大引き戻し含む
+シンフォギアチャンス継続率	■時短7回・・・約64%■保留内最大・・・約44%
+賞球数	4&1&3&14
+ラウンド	4R or 8R or 12R or 15R
+カウント	7カウント
+出玉	約392 or 約784 or 約1176 or 約1470個※払い出し
+電サポ	1 or 7回
 
-大当り割合
-ヘソ	ラウンド	電サポ回数	比率
-10R確変	次回まで	40%
-2R確変	次回まで	20%
-10R通常	100回	40%
-電チュー	ラウンド	電サポ回数	比率
-10R確変	次回まで	52%
-2R確変	次回まで	8%
-10R通常	120回	40%
+大当り割合(199ver.)
+特図1	ラウンド	電サポ回数	比率
+15R	7回	1%
+4R	1回	99％
+特図2	ラウンド	電サポ回数	比率
+15R	7回	40%
+12R	7回	3%
+8R	7回	7%
+4R	7回	50%
 """
 
 def information():
-    codename = "P_okiumi5"
+    codename = "CR_symphogear"
     # 低確率状態での大当たり確率[1/n]
-    normal = 319.6
-    # 高確率状態での大当たり確率[1/n]
-    koukaku = 38.0
+    normal = 199.8
+    # 高確率状態での小当たり確率[1/n]
+    koukaku = 7.4
     # 賞球（ヘソ、電チュー、一般入賞口、アタッカー、カウント）
-    syokyu = [3, 2, 4, 15, 10]
+    syokyu = [4, 1, 3, 14, 7]
     return normal, koukaku, syokyu, codename
 
 def furiwake_heso():
     a = random.randint(0, 100)
-    if a < 40:
-        furiwake = "10R（確変）"
+    if a < 1:
+        furiwake = "15R（全回転）"
         kakuhen = True
         densapo = True
-        round = 10
-        kakuhen_time = 9999
-        jitan_time = 9999
-    elif a >= 40 and a < 60:
-        furiwake = "2R（確変）"
-        kakuhen = True
-        densapo = True
-        round = 2
-        kakuhen_time = 9999
-        jitan_time = 9999
+        round = 15
+        kakuhen_time = 11
+        jitan_time = 11
     else:
-        furiwake = "10R（通常）"
-        kakuhen = False
+        furiwake = "4R"
+        kakuhen = True
         densapo = True
-        round = 10
-        kakuhen_time = 0
-        jitan_time = 100
+        round = 4
+        kakuhen_time = 5
+        jitan_time = 5
     return furiwake, kakuhen, densapo, round, kakuhen_time, jitan_time
 
 def furiwake_denchu():
     a = random.randint(0, 100)
-    if a < 52:
-        furiwake = "10R（確変）"
+    if a < 40:
+        furiwake = "15R（時短）"
         kakuhen = True
         densapo = True
-        round = 10
-        kakuhen_time = 9999
-        jitan_time = 9999
-    elif a >= 52 and a < 60:
-        furiwake = "2R（確変）"
+        round = 15
+        kakuhen_time = 11
+        jitan_time = 11
+    elif a >= 40 and a < 43:
+        furiwake = "12R（時短）"
         kakuhen = True
         densapo = True
-        round = 2
-        kakuhen_time = 9999
-        jitan_time = 9999
+        round = 12
+        kakuhen_time = 11
+        jitan_time = 11
+    elif a >= 43 and a < 50:
+        furiwake = "8R（時短）"
+        kakuhen = True
+        densapo = True
+        round = 8
+        kakuhen_time = 11
+        jitan_time = 11
     else:
-        furiwake = "10R（通常）"
+        furiwake = "4R（時短）"
         kakuhen = False
         densapo = True
-        round = 10
-        kakuhen_time = 0
-        jitan_time = 120
+        round = 4
+        kakuhen_time = 11
+        jitan_time = 11
     return furiwake, kakuhen, densapo, round, kakuhen_time, jitan_time
 
 def ram_clear():
@@ -141,21 +144,6 @@ def chusen_koukaku(tokuzu2_atari):
         result = 0
     return result
 
-
-def chusen_jitan(tokuzu1_atari, kaiten, limit):
-    # 時短中の扱い
-    if kaiten <= limit:
-        lottery = random.randint(0, 65536)
-        if lottery in tokuzu1_atari:
-            # 大当たり
-            result = 2
-        else:
-            # はずれ
-            result = 0
-    else:
-        # 左打ちに戻す信号を送る
-        result = 9
-    return result
 
 def calc_border(border):
     # ボーダーの計算
@@ -232,7 +220,6 @@ def main(trials:int, border:int):
     fig = result.plot(x = '総回転数', y = '差玉', title = title, legend=False )
     plt.savefig("result.pdf")
     plt.savefig("result.png")
-
 
 if __name__ == '__main__':
     args = sys.argv
